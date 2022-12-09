@@ -87,9 +87,28 @@ class CheckoutController extends Controller
 
     public function confirm_order(Request $request){
         $data = $request->all();
+        $address = $data['address'];
+//        $request->validate(
+//            [
+//                'shipping_email' => 'required',
+//                'shipping_name' => 'required',
+//                'shipping_phone' => 'required',
+//                'shipping_address' => 'required',
+//                'city' => 'required',
+//                'province' => 'required',
+//                'wards' => 'required',
+//            ],
+//            [
+//                'shipping_email.required' => 'Email không được bỏ trống',
+//                'shipping_name.required' => 'Tên khách hàng không được bỏ trống',
+//                'shipping_phone.required' => 'Số điện thoại không được bỏ trống',
+//                'shipping_address.required' => 'Địa chỉ không được bỏ trống',
+//
+//            ]
+//        );
         $shipping = new Shipping();
         $shipping->shipping_name = $data['shipping_name'];
-        $shipping->shipping_address = $data['shipping_address'];
+        $shipping->shipping_address = $data['shipping_address'] . ' '. $address;
         $shipping->shipping_phone = $data['shipping_phone'];
         $shipping->shipping_email = $data['shipping_email'];
         $shipping->shipping_note = $data['shipping_note'];

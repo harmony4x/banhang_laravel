@@ -167,11 +167,21 @@ class CartController extends Controller
                 foreach ($cart as $session => $val) {
                     if ($val['session_id'] == $key && $val['product_max_qty'] >= $qty) {
                         $cart[$session]['product_qty'] = $qty;
+                        $flag = 1;
+
+                    }else {
+                        $flag = 0;
                     }
                 }
             }
-            Session::put('cart',$cart);
-            return redirect()->back()->with('message2', 'Cập nhật giỏ hàng thành công');
+            if ($flag==1){
+                Session::put('cart',$cart);
+                return redirect()->back()->with('message2', 'Cập nhật giỏ hàng thành công');
+            }else {
+                return redirect()->back()->with('message', 'Cập nhật giỏ hàng thất bại');
+
+            }
+
         }
     }
 

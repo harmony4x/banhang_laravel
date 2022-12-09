@@ -320,6 +320,9 @@
     $(document).ready(function (){
 
         $('.send_order').click(function (){
+            function validate() {
+
+            }
             swal({
                     title: "Xác nhận đơn hàng",
                     text: "Đơn hàng sẽ không được hoàn trả khi đặt hàng. Bạn có muốn tiếp tục đặt hàng không?",
@@ -340,17 +343,24 @@
                     var order_coupon = $('.order_coupon').val();
                     var order_fee = $('.order_fee').val();
                     var _token = $('input[name="_token"]').val();
-
+                    var city = $('#city option:selected').text();
+                    var province = $('#province option:selected').text();
+                    var wards = $('#wards option:selected').text();
+                    var address = `${wards} ${province} ${city}`;
 
                     $.ajax({
                         url : '{{url('/confirm-order')}}',
                         method : 'POST',
-                        data : {shipping_email:shipping_email,shipping_name:shipping_name,shipping_phone:shipping_phone,shipping_address:shipping_address,shipping_note:shipping_note,order_coupon:order_coupon,order_fee:order_fee,shipping_method:shipping_method,_token:_token},
+                        data : {shipping_email:shipping_email,shipping_name:shipping_name,shipping_phone:shipping_phone,shipping_address:shipping_address,shipping_note:shipping_note,order_coupon:order_coupon,order_fee:order_fee,shipping_method:shipping_method,_token:_token,address:address},
                         success:function (data){
                             swal("Thông báo!", "Đơn hàng của bạn đã được đặt thành công.", "success");
                             window.setTimeout(function (){
                                 window.location.replace("/");
                             },3000);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
                         }
                     })
 

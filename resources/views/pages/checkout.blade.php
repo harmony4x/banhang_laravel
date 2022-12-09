@@ -99,23 +99,23 @@
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email</label>
-                                    <input type="email"  value="{{old('shipping_email')}}" name="shipping_email" class="form-control shipping_email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="email" required  value="{{old('shipping_email')}}" name="shipping_email" class="form-control shipping_email" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     <div id="emailHelp" class="form-text"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Họ và tên</label>
-                                    <input type="text" value="{{old('shipping_name')}}" name="shipping_name" class="form-control shipping_name" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="text" required value="{{old('shipping_name')}}" name="shipping_name" class="form-control shipping_name" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     <div id="emailHelp" class="form-text"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Số điện thoại</label>
-                                    <input type="text" value="{{old('shipping_phone')}}" name="shipping_phone" class="form-control shipping_phone" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="text" required value="{{old('shipping_phone')}}" name="shipping_phone" class="form-control shipping_phone" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     <div id="emailHelp" class="form-text"></div>
                                 </div>
                                 <form autocomplete="off">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Thành phố</label>
-                                        <select class="form-control m-bot15 city choose" name="city" id="city">
+                                        <select class="form-control m-bot15 city choose" name="city" id="city" required>
                                             <option disabled selected >----Chọn tỉnh thành phố----</option>
                                             @foreach($city as $key => $cit)
                                                 <option value="{{$cit->id}}">{{$cit->name}}</option>
@@ -124,20 +124,20 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Quận</label>
-                                        <select class="form-control m-bot15 province choose" name="province" id="province">
+                                        <select class="form-control m-bot15 province choose" name="province" id="province" required>
                                             <option disabled selected >----Chọn quận huyện----</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Phường</label>
-                                        <select class="form-control m-bot15 wards cal_feeship" name="wards" id="wards">
+                                        <select class="form-control m-bot15 wards cal_feeship" name="wards" id="wards" required>
                                             <option disabled selected >----Chọn xã phường----</option>
                                         </select>
                                     </div>
                                 </form>
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Địa chỉ</label>
-                                    <input type="text" value="{{old('shipping_address')}}" name="shipping_address" class="form-control shipping_address" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="text" required value="{{old('shipping_address')}}" name="shipping_address" class="form-control shipping_address" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     <div id="emailHelp" class="form-text"></div>
                                 </div>
                                 <div class="mb-3">
