@@ -183,7 +183,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <span>Khách hàng</span>
                         </a>
                         <ul class="sub">
-                            <li><a href="{{route('user.create')}}">Thêm khách hàng</a></li>
+{{--                            <li><a href="{{route('user.create')}}">Thêm khách hàng</a></li>--}}
                             <li><a href="{{route('user.index')}}">Hiển thị khách hàng</a></li>
                         </ul>
                     </li>
