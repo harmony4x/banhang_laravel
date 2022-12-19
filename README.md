@@ -12,3 +12,5 @@
 
 ## Trang khách hàng
 - Đường dẫn: localhost/banhang_laravel/public/
+
+## Hướng dẫn cách tích hợp chatbot vào website
