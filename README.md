@@ -16,3 +16,7 @@
 ## Hướng dẫn cách tích hợp chatbot vào website
 - Link chatbot: https://github.com/harmony4x/banhang_chatbot
 - Link custom rasa: https://github.com/harmony4x/custom_rasa
+- Để chạy chatbot và kết nối với chatbot thông qua socket, tại thư mục root của toàn bộ dự án, gõ lệnh:
+    `rasa run -m models --enable-api --cors "*" --debug`
+- Để chatbot kết nối được với cơ sở dữ liệu, gõ lệnh: 
+     `rasa run actions`
