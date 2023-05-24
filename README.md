@@ -14,3 +14,5 @@
 - Đường dẫn: localhost/banhang_laravel/public/
 
 ## Hướng dẫn cách tích hợp chatbot vào website
+- Link chatbot: https://github.com/harmony4x/banhang_chatbot
+- Link custom rasa: https://github.com/harmony4x/custom_rasa
