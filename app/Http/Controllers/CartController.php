@@ -17,14 +17,15 @@ use App\Models\Feeship;
 
 class CartController extends Controller
 {
-    public function save_product(Request $request) {
+    public function save_product(Request $request)
+    {
         $data = $request->all();
         $id = $data['product_id'];
         $quantity_db = Product::find($id);
-        $session_id = substr(md5(microtime()),rand(0,26),5);
+        $session_id = substr(md5(microtime()), rand(0, 26), 5);
         $cart = Session::get('cart');
-        if ($data['product_qty']<$quantity_db->quantity){
-            if($cart==true) {
+        if ($data['product_qty'] < $quantity_db->quantity) {
+            if ($cart == true) {
                 $is_avaiable = 0;
                 foreach ($cart as $key => $val) {
                     if ($val['product_id'] == $data['product_id']) {
@@ -45,7 +46,7 @@ class CartController extends Controller
                     );
                     Session::put('cart', $cart);
                 }
-            }else{
+            } else {
                 $cart[] = array(
                     'session_id' => $session_id,
                     'product_name' => $data['product_name'],
@@ -56,56 +57,58 @@ class CartController extends Controller
                     'product_max_qty' => $quantity_db->quantity,
 
                 );
-                Session::put('cart',$cart);
+                Session::put('cart', $cart);
             }
 
             Session::save();
             return redirect()->route('cart');
-        }else {
-            return redirect()->back()->with('message','Số lượng tồn kho không đủ');
+        } else {
+            return redirect()->back()->with('message', 'Số lượng tồn kho không đủ.');
         }
-
     }
 
-    public function index() {
-        $brands = Brand::where('status',1)->orderBy('id','DESC')->get();
-        $category = Category::where('status',1)->orderBy('id','DESC')->get();
-        return view('pages.cart')->with(compact('brands','category'));
+    public function index()
+    {
+        $brands = Brand::where('status', 1)->orderBy('id', 'DESC')->get();
+        $category = Category::where('status', 1)->orderBy('id', 'DESC')->get();
+        return view('pages.cart')->with(compact('brands', 'category'));
     }
 
 
 
-    public function update_cart_quantity(Request $request) {
+    public function update_cart_quantity(Request $request)
+    {
         $data = $request->all();
-//        echo '<pre>';
-//        print_r($data);
-//        echo '</pre>';
+        //        echo '<pre>';
+        //        print_r($data);
+        //        echo '</pre>';
 
         $rowId = $request->rowId;
         $qty = $request->qty;
-        Cart::update($rowId,$qty);
+        Cart::update($rowId, $qty);
 
         return redirect()->route('cart');
     }
 
-    public function add_cart_ajax(Request $request){
+    public function add_cart_ajax(Request $request)
+    {
         $data = $request->all();
-        $session_id = substr(md5(microtime()),rand(0,26),5);
+        $session_id = substr(md5(microtime()), rand(0, 26), 5);
         $id = $data['cart_product_id'];
         $cart = Session::get('cart');
         $quantity_db = Product::find($id);
 
-        if ($data['cart_product_qty']<$quantity_db->quantity){
-            if($cart==true){
+        if ($data['cart_product_qty'] < $quantity_db->quantity) {
+            if ($cart == true) {
                 $is_avaiable = 0;
-                foreach($cart as $key => $val){
-                    if($val['product_id']==$data['cart_product_id']){
+                foreach ($cart as $key => $val) {
+                    if ($val['product_id'] == $data['cart_product_id']) {
                         $is_avaiable++;
-                        $cart[$key]['product_qty']+=1;
-                        Session::put('cart',$cart);
+                        $cart[$key]['product_qty'] += 1;
+                        Session::put('cart', $cart);
                     }
                 }
-                if($is_avaiable == 0){
+                if ($is_avaiable == 0) {
                     $cart[] = array(
                         'session_id' => $session_id,
                         'product_name' => $data['cart_product_name'],
@@ -115,9 +118,9 @@ class CartController extends Controller
                         'product_price' => $data['cart_product_price'],
                         'product_max_qty' => $quantity_db->quantity,
                     );
-                    Session::put('cart',$cart);
+                    Session::put('cart', $cart);
                 }
-            }else{
+            } else {
                 $cart[] = array(
                     'session_id' => $session_id,
                     'product_name' => $data['cart_product_name'],
@@ -128,147 +131,139 @@ class CartController extends Controller
                     'product_max_qty' => $quantity_db->quantity,
 
                 );
-                Session::put('cart',$cart);
+                Session::put('cart', $cart);
             }
 
             Session::save();
-        }else {
+        } else {
             echo ('<script>alert("Số lượng tồn kho không đủ")</script>');
         }
-
-
     }
 
-    public function delete_product($session_id){
+    public function delete_product($session_id)
+    {
         $cart = Session::get('cart');
         if ($cart) {
             foreach ($cart as $key => $val) {
                 if ($val['session_id'] == $session_id) {
-//                    Session::forget($cart[$key]);
+                    //                    Session::forget($cart[$key]);
                     unset($cart[$key]);
                     Session::put('cart', $cart);
-
                 }
-
             }
         }
-        if ($cart==null){
+        if ($cart == null) {
             Session::flush();
         }
         return redirect()->back()->with('message', 'Xóa sản phẩm thành công');
     }
 
-    public function update_cart(Request $request) {
+    public function update_cart(Request $request)
+    {
         $data = $request->all();
         $cart = Session::get('cart');
 
-        if ($cart==true){
+        if ($cart == true) {
             foreach ($data['cart_qty'] as $key => $qty) {
                 foreach ($cart as $session => $val) {
                     if ($val['session_id'] == $key && $val['product_max_qty'] >= $qty) {
                         $cart[$session]['product_qty'] = $qty;
                         $flag = 1;
-
-                    }else {
+                    } else {
                         $flag = 0;
                     }
                 }
             }
-            if ($flag==1){
-                Session::put('cart',$cart);
+            if ($flag == 1) {
+                Session::put('cart', $cart);
                 return redirect()->back()->with('message2', 'Cập nhật giỏ hàng thành công');
-            }else {
+            } else {
                 return redirect()->back()->with('message', 'Cập nhật giỏ hàng thất bại');
-
             }
-
         }
     }
 
-    public function delete_all_cart() {
+    public function delete_all_cart()
+    {
         Session::flush();
         return redirect()->back();
     }
 
-    public function check_coupon(Request $request) {
+    public function check_coupon(Request $request)
+    {
         $data = $request->all();
         $coupon = Coupon::where('coupon_code', $data['coupon_code'])->first();
-        if ($coupon){
+        if ($coupon) {
             $coupon_session = Session::get('coupon');
-            if ($coupon_session==true){
+            if ($coupon_session == true) {
                 $cou[] = array(
                     'coupon_code' => $coupon->coupon_code,
                     'coupon_number' => $coupon->coupon_number,
                     'coupon_condition' => $coupon->coupon_condition,
                 );
-                Session::put('coupon',$cou);
-            }else {
+                Session::put('coupon', $cou);
+            } else {
                 $cou[] = array(
                     'coupon_code' => $coupon->coupon_code,
                     'coupon_number' => $coupon->coupon_number,
                     'coupon_condition' => $coupon->coupon_condition,
                 );
-                Session::put('coupon',$cou);
+                Session::put('coupon', $cou);
             }
             Session::save();
             return redirect()->back()->with('message2', 'Áp dụng mã giảm giá thành công');
-
-        }else {
+        } else {
             return redirect()->back()->with('message', 'Áp dụng mã giảm giá thất bại');
         }
     }
-    public function check_coupon_ajax(Request $request) {
+    public function check_coupon_ajax(Request $request)
+    {
         $total = 0;
-        foreach(Session::get('cart') as $key => $cart){
-            $sub = $cart['product_price']*$cart['product_qty'];
+        foreach (Session::get('cart') as $key => $cart) {
+            $sub = $cart['product_price'] * $cart['product_qty'];
             $total += $sub;
         }
         $data = $request->all();
         $coupon = Coupon::where('coupon_code', $data['coupon_code'])->first();
-        if ($coupon){
+        if ($coupon) {
             $coupon_session = Session::get('coupon');
-            if ($coupon_session==true){
+            if ($coupon_session == true) {
                 $cou[] = array(
                     'coupon_code' => $coupon->coupon_code,
                     'coupon_number' => $coupon->coupon_number,
                     'coupon_condition' => $coupon->coupon_condition,
                 );
-                Session::put('coupon',$cou);
-            }else {
+                Session::put('coupon', $cou);
+            } else {
                 $cou[] = array(
                     'coupon_code' => $coupon->coupon_code,
                     'coupon_number' => $coupon->coupon_number,
                     'coupon_condition' => $coupon->coupon_condition,
                 );
-                Session::put('coupon',$cou);
+                Session::put('coupon', $cou);
             }
             Session::save();
             $out = '';
 
-            if(Session::has('coupon')) {
+            if (Session::has('coupon')) {
 
-                foreach(Session::get('coupon') as $key => $coup){
-                    if($coup['coupon_condition']==1){
+                foreach (Session::get('coupon') as $key => $coup) {
+                    if ($coup['coupon_condition'] == 1) {
 
-                        $total_coupon = ($total * $coup['coupon_number'])/100;
-                        $out .= number_format($total_coupon) .' VNĐ';
-                        Session::put('total_coupon',$total_coupon);
-                    }else{
-                        $out .= number_format($coup['coupon_number']) .' VNĐ';
-                        Session::put('total_coupon',$coup['coupon_number']);
+                        $total_coupon = ($total * $coup['coupon_number']) / 100;
+                        $out .= number_format($total_coupon) . ' VNĐ';
+                        Session::put('total_coupon', $total_coupon);
+                    } else {
+                        $out .= number_format($coup['coupon_number']) . ' VNĐ';
+                        Session::put('total_coupon', $coup['coupon_number']);
                     }
                 }
-
-            }else {
+            } else {
                 $out .= 0;
-                Session::put('total_coupon',0);
+                Session::put('total_coupon', 0);
             }
             Session::save();
             echo $out;
-
         }
-
-
     }
-
 }
