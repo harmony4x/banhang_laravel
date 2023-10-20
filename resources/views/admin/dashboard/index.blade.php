@@ -42,15 +42,15 @@
             <div class="col-md-2" style="margin-top: 18px">
                 <div class="col">
                     <div class="row">
-                        <div class="col-md-2" style="margin-top: 8px;">
-                            <div style="width: 5px;height: 5px ;background: rgb(122,146,163);"></div>
+                        <div class="col-md-2" style="margin-top: 5px;">
+                            <div style="width: 10px;height: 10px ;background: rgb(122,146,163);"></div>
                         </div>
                         <span>Doanh số</span>
                     </div>
                     <div class="row">
 
-                        <div class="col-md-2" style="margin-top: 8px;">
-                            <div style="width: 5px;height: 5px ; background: rgb(77,167,77)"></div>
+                        <div class="col-md-2" style="margin-top: 5px;">
+                            <div style="width: 10px;height: 10px ; background: rgb(77,167,77)"></div>
                         </div>
                         <span>Lợi nhuận</span>
                     </div>
